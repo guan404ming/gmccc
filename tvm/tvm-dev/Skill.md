@@ -1,14 +1,14 @@
 ---
-name: tvm-dev-relax
+name: tvm-dev
 description: Resolve a TODO or fix an issue in the TVM relax folder.
 ---
 
-# TVM Dev Relax
+# TVM Dev
 
 ## Usage
 ```
-/tvm-dev-relax                    # pick a TODO from relax/
-/tvm-dev-relax <GitHub issue URL> # fix a reported issue
+/tvm-dev                    # pick a TODO from relax/
+/tvm-dev <GitHub issue URL> # fix a reported issue
 ```
 
 ## Instructions
@@ -30,16 +30,7 @@ description: Resolve a TODO or fix an issue in the TVM relax folder.
 
 5. **If fixing an issue:** Re-run the repro script to verify it passes, then delete it.
 
-6. **Verify:**
-
-   | Trigger | Command |
-   |---|---|
-   | `*.cc`, `*.h`, `*.cpp` changed | `make -C build -j8` |
-   | `*.py` changed | `bash docker/lint.sh -i python_format pylint` |
-   | `*.cc`, `*.h` changed | `bash docker/lint.sh -i clang_format cpplint` |
-   | `*.java`, `*_jni.cc` changed | `bash docker/lint.sh jnilint` |
-   | Any file | `bash docker/lint.sh asf` |
-   | Python tests | `pytest tests/python -xv` |
+6. **Verify:** Use `/tvm-build` if C/C++ changed, then `/tvm-test`.
 
 7. **Commit** with `git commit -n -m "msg"` — no co-author tags.
 
