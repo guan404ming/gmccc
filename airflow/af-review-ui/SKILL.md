@@ -35,7 +35,7 @@ React 19, Chakra UI v3, React Query, TypeScript, Vite, pnpm
 
 3. Run `prek airflow-core:ts-compile-lint-ui`
 
-4. Only focus on the changes made in this PR. Do not review unchanged code.
+4. Skip generated files: `openapi-gen/`, `openapi.merged.json`, `api_fastapi/*/openapi/*.yaml`. Only focus on the changes made in this PR. Do not review unchanged code.
 
 5. List issues as polite GitHub comment suggestions (do NOT post). Only report real issues — if there are fewer than 5, that's fine. Do not pad the list.
    ```
@@ -43,9 +43,11 @@ React 19, Chakra UI v3, React Query, TypeScript, Vite, pnpm
    2. `src/Bar.tsx:15` - Type should come from `openapi-gen/`.
    ```
 
-6. Start the verdict with a one-sentence summary of whether this PR's change is valuable or unnecessary.
+6. Check changed code against `/react-best-practices` rules. List up to 2 most violated rules with file and line. Skip this section if none found.
 
-7. End with a verdict:
+7. Start the verdict with a one-sentence summary of whether this PR's change is valuable or unnecessary.
+
+8. End with a verdict:
    - **Approved** — no issues found, good to merge.
    - **Approved with comments** — minor suggestions, but OK to merge as-is.
    - **Request changes** — blocking issues that should be fixed before merge.
