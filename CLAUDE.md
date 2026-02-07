@@ -5,3 +5,4 @@
 - Reuse, don't rebuild
 - No duplication
 - Comments: simple and clear
+- No em dashes (—), use commas or periods instead

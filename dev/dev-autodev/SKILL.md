@@ -5,7 +5,7 @@ description: Common autodev loop for branch, implement, test, commit, and PR sum
 
 # Autodev Loop
 
-Shared development workflow used by project-specific dev skills.
+Shared development workflow used by project-specific dev skills. No planning step, go straight to implementation.
 
 ## Steps
 

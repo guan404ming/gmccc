@@ -7,13 +7,13 @@ description: Develop dialect features for datafusion-sqlparser-rs from the upstr
 
 ## Usage
 ```
-/df-dev <dialect> <feature>
+/df-dev                  # auto-pick next unchecked item from target/NOTE.md
 /df-dev <text description>
 ```
 
 ## Instructions
 
-1. **Understand the task:** Check `target/NOTE.md` for the upstream contribution list. Match the request to an unchecked item if applicable.
+1. **Understand the task:** Check `target/NOTE.md` for the upstream contribution list. If no argument given, pick the next unchecked item. Otherwise, match the request to an item if applicable.
 
 2. Follow `/dev-autodev` loop with these project-specific details:
 
