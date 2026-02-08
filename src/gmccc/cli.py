@@ -59,10 +59,10 @@ def cmd_stop(config_path: Path | None):
     print("Scheduler stopped")
 
 
-def cmd_status(config_path: Path | None):
-    """Check scheduler status, jobs, and logs path."""
-    pid = _read_pid(PID_FILE)
 
+def cmd_list(config_path: Path | None):
+    """Show scheduler status, jobs, and recent logs."""
+    pid = _read_pid(PID_FILE)
     if pid:
         print(f"Scheduler: running (PID: {pid})")
     else:
@@ -70,25 +70,16 @@ def cmd_status(config_path: Path | None):
 
     config_file = resolve_config_path(config_path)
     print(f"Config: {config_file}")
-    logs_dir = config_file.parent / "logs"
-    print(f"Logs: {logs_dir}")
 
-    if config_file.exists():
-        config = get_config(config_path)
-        print(f"\nJobs ({len(config.jobs)}):")
-        for j in config.jobs:
-            status = "enabled" if j.enabled else "disabled"
-            print(f"  - {j.name} /{j.skill} ({status}) {j.schedule.cron}")
+    config = get_config(config_path)
+    print(f"\nJobs ({len(config.jobs)}):")
+    for j in config.jobs:
+        status = "enabled" if j.enabled else "disabled"
+        print(f"  - {j.name} /{j.skill} ({status}) {j.schedule.cron}")
 
-
-def cmd_logs(config_path: Path | None):
-    """Show scheduler daemon log."""
-    if not LOG_FILE.exists():
-        print("No log file found. Start scheduler first: gmccc start")
-        return
-
-    print(f"Log: {LOG_FILE}\n")
-    print(LOG_FILE.read_text())
+    if LOG_FILE.exists():
+        print(f"\nLogs ({LOG_FILE}):")
+        print(LOG_FILE.read_text())
 
 
 def main():
@@ -97,7 +88,7 @@ def main():
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["install", "uninstall", "run", "config", "list", "test", "start", "stop", "status", "logs"],
+        choices=["install", "uninstall", "run", "config", "list", "test", "start", "stop"],
         help="Commands (i = install, u = uninstall, r = run, c = config, l = list, t = test)",
     )
     parser.add_argument("name", nargs="?", help="Argument for run/config commands")
@@ -118,13 +109,15 @@ def main():
         uninstall()
         return
 
-    if args.command and args.command not in ("run", "list", "test"):
+    if args.command == "list":
+        cmd_list(config_path)
+        return
+
+    if args.command and args.command not in ("run", "test"):
         cmds = {
             "install": lambda c: setup(c),
             "start": cmd_start,
             "stop": cmd_stop,
-            "status": cmd_status,
-            "logs": cmd_logs,
         }
         cmds[args.command](config_path)
         return
@@ -134,13 +127,6 @@ def main():
     config_dir = resolve_config_path(config_path).parent
     logs_dir = config_dir / "logs"
     jobs = config.jobs
-
-    if args.command == "list":
-        print("Available jobs:")
-        for j in jobs:
-            status = "enabled" if j.enabled else "disabled"
-            print(f"- {j.name} /{j.skill} ({status}) {j.schedule.cron}")
-        return
 
     if args.command == "run":
         if not args.name:
