@@ -12,14 +12,21 @@ npx gmccc install
 npx gmccc uninstall
 ```
 
-## Scheduler (gmccc CLI)
+## gmccc CLI
 
 ```bash
 uv tool install gmccc
-gmccc --init       # Create ~/.config/gmccc/jobs.json
-gmccc --list       # List jobs
-gmccc -p <name>    # Run specific job
-gmccc --dry-run    # Simulate execution
-gmccc start        # Start scheduler daemon
-gmccc stop         # Stop scheduler
 ```
+
+| Command | Alias | Description |
+|---|---|---|
+| `gmccc install` | `gmccc i` | Install skills via openskills |
+| `gmccc run <name>` | `gmccc r <name>` | Run a specific job |
+| `gmccc config` | `gmccc c` | Create default config file |
+| `gmccc config <path>` | `gmccc c <path>` | Create config at custom path |
+| `gmccc start` | | Start scheduler daemon |
+| `gmccc stop` | | Stop scheduler daemon |
+| `gmccc status` | | Check scheduler status |
+| `gmccc logs` | | Tail scheduler logs |
+| `gmccc list` | `gmccc l` | List available jobs |
+| `gmccc test` | `gmccc t` | Simulate execution |

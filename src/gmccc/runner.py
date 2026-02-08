@@ -1,7 +1,6 @@
 """Job runner - load config and execute skills via openskills."""
 
 import json
-import os
 import smtplib
 import subprocess
 from datetime import datetime
@@ -15,6 +14,13 @@ DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_DIR / "jobs.json"
 
 EXAMPLE_CONFIG = {
     "skills_repo": "guan404ming/claude-code-skills",
+    "email": {
+        "to": "",
+        "smtp_user": "",
+        "smtp_password": "",
+        "smtp_host": "smtp.gmail.com",
+        "smtp_port": 587,
+    },
     "jobs": [
         {
             "name": "example",
@@ -43,36 +49,16 @@ def resolve_config_path(config_path: Path | None = None) -> Path:
     return DEFAULT_CONFIG_FILE
 
 
-def _load_env(config_dir: Path):
-    """Load .env file into os.environ."""
-    env_file = config_dir / ".env"
-    if not env_file.exists():
-        return
-    for line in env_file.read_text().splitlines():
-        line = line.strip()
-        if not line or line.startswith("#") or "=" not in line:
-            continue
-        key, _, value = line.partition("=")
-        os.environ.setdefault(key.strip(), value.strip().strip("\"'"))
-
-
 def get_config(config_path: Path | None = None) -> Config:
-    """Load config, with smtp_password from .env next to config file."""
+    """Load config from jobs.json."""
     path = resolve_config_path(config_path)
     if not path.exists():
         raise FileNotFoundError(
             f"Config not found: {path}\n"
-            f"Run 'gmccc --init' to create a default config."
+            f"Run 'gmccc config' to create a default config."
         )
-    _load_env(path.parent)
     data = json.loads(path.read_text())
-    config = Config(**data)
-    if config.email:
-        config.email.smtp_user = os.environ.get("SMTP_USER", config.email.smtp_user)
-        config.email.smtp_password = os.environ.get(
-            "SMTP_PASSWORD", config.email.smtp_password
-        )
-    return config
+    return Config(**data)
 
 
 def get_jobs(config_path: Path | None = None) -> list[JobConfig]:
@@ -133,6 +119,12 @@ def run_job(
     if dry_run:
         print(f"[DRY RUN] Would run {prompt} in {target}")
         print(f"  {' '.join(cmd)}")
+        if email and email.smtp_user and email.smtp_password:
+            send_email(
+                email,
+                subject=f"[gmccc] {config.name} test",
+                body=f"Job: {config.name}\nSkill: /{config.skill}\nStatus: test",
+            )
         return
 
     if not target.exists():

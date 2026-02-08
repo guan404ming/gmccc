@@ -1,7 +1,11 @@
 {
   "skills_repo": "guan404ming/claude-code-skills",
   "email": {
-    "to": "guanmingchiu@gmail.com"
+    "to": "guanmingchiu@gmail.com",
+    "smtp_user": "",
+    "smtp_password": "",
+    "smtp_host": "smtp.gmail.com",
+    "smtp_port": 587
   },
   "jobs": [
     {

@@ -94,59 +94,59 @@ def cmd_logs(config_path: Path | None):
 
 def main():
     parser = argparse.ArgumentParser(description="gmccc - Claude workflow automation")
+    aliases = {"i": "install", "r": "run", "c": "config", "l": "list", "t": "test"}
     parser.add_argument(
         "command",
         nargs="?",
-        choices=["start", "stop", "status", "logs"],
-        help="Scheduler daemon commands",
+        choices=["install", "run", "config", "list", "test", "start", "stop", "status", "logs"],
+        help="Commands (i = install, r = run, c = config, l = list, t = test)",
     )
-    parser.add_argument("-c", "--config", type=Path, help="Path to jobs config file")
-    parser.add_argument("-p", "--project", help="Run specific job by name")
-    parser.add_argument("-l", "--list", action="store_true", help="List available jobs")
-    parser.add_argument(
-        "--setup", action="store_true", help="Install skills via openskills"
-    )
-    parser.add_argument(
-        "--init", action="store_true", help="Create default config file"
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Simulate execution without running commands",
-    )
-    args = parser.parse_args()
+    parser.add_argument("name", nargs="?", help="Argument for run/config commands")
 
-    if args.command:
-        {"start": cmd_start, "stop": cmd_stop, "status": cmd_status, "logs": cmd_logs}[
-            args.command
-        ](args.config)
+    # Resolve aliases before parsing
+    raw = sys.argv[1:]
+    if raw and raw[0] in aliases:
+        raw[0] = aliases[raw[0]]
+    args = parser.parse_args(raw)
+
+    config_path = Path(args.name) if args.name and args.command == "config" else None
+
+    if args.command == "config":
+        init(config_path)
         return
 
-    if args.init:
-        init(args.config)
+    if args.command and args.command not in ("run", "list", "test"):
+        cmds = {
+            "install": lambda c: setup(c),
+            "start": cmd_start,
+            "stop": cmd_stop,
+            "status": cmd_status,
+            "logs": cmd_logs,
+        }
+        cmds[args.command](config_path)
         return
 
-    if args.setup:
-        setup(args.config)
-        return
-
-    config = get_config(args.config)
-    config_dir = resolve_config_path(args.config).parent
+    dry_run = args.command == "test"
+    config = get_config(config_path)
+    config_dir = resolve_config_path(config_path).parent
     logs_dir = config_dir / "logs"
     jobs = config.jobs
 
-    if args.list:
+    if args.command == "list":
         print("Available jobs:")
         for j in jobs:
             status = "enabled" if j.enabled else "disabled"
             print(f"- {j.name} /{j.skill} ({status}) {j.schedule.cron}")
         return
 
-    if args.project:
-        jobs = [j for j in jobs if j.name == args.project]
+    if args.command == "run":
+        if not args.name:
+            print("Usage: gmccc run <name>")
+            sys.exit(1)
+        jobs = [j for j in jobs if j.name == args.name]
         if not jobs:
-            print(f"Job '{args.project}' not found.")
+            print(f"Job '{args.name}' not found.")
             sys.exit(1)
 
     for job in jobs:
-        run_job(job, email=config.email, logs_dir=logs_dir, dry_run=args.dry_run)
+        run_job(job, email=config.email, logs_dir=logs_dir, dry_run=dry_run)

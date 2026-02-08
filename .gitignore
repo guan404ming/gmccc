@@ -9,3 +9,4 @@ build/
 *.log
 .scheduler.pid
 jobs.local.json
+jobs.json
