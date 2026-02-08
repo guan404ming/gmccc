@@ -2,7 +2,7 @@
 
 Custom skills for Claude Code.
 
-## Install
+## Install Skills with npx
 
 ```bash
 npx gmccc install
