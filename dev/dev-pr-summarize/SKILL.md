@@ -24,7 +24,7 @@ Generate a clear, minimal changelog for the current branch.
 
 <One sentence explaining the motivation or problem>
 
-## How
+## How (at most 3 points, start with verb)
 
 - <Bullet points describing what was done, keep each line short>
 - <Focus on what changed, not implementation details>
@@ -34,6 +34,6 @@ Generate a clear, minimal changelog for the current branch.
 
 - Title must follow the repo's commit message convention detected in step 1
 - "Why" is one sentence max
-- "How" bullets should be minimal and clear
+- "How" bullets should be extremely minimal and clear
 - No fluff, no over-explanation
 - Output only the changelog, nothing else
