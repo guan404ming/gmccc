@@ -60,13 +60,25 @@ def cmd_stop(config_path: Path | None):
 
 
 def cmd_status(config_path: Path | None):
-    """Check scheduler status."""
+    """Check scheduler status, jobs, and logs path."""
     pid = _read_pid(PID_FILE)
 
     if pid:
-        print(f"Scheduler running (PID: {pid})")
+        print(f"Scheduler: running (PID: {pid})")
     else:
-        print("Scheduler not running")
+        print("Scheduler: not running")
+
+    config_file = resolve_config_path(config_path)
+    print(f"Config: {config_file}")
+    logs_dir = config_file.parent / "logs"
+    print(f"Logs: {logs_dir}")
+
+    if config_file.exists():
+        config = get_config(config_path)
+        print(f"\nJobs ({len(config.jobs)}):")
+        for j in config.jobs:
+            status = "enabled" if j.enabled else "disabled"
+            print(f"  - {j.name} /{j.skill} ({status}) {j.schedule.cron}")
 
 
 def cmd_logs(config_path: Path | None):

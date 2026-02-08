@@ -1,6 +1,7 @@
 """Job runner - load config and execute skills via openskills."""
 
 import json
+import shutil
 import smtplib
 import subprocess
 from datetime import datetime
@@ -150,6 +151,9 @@ def run_job(
             lf.flush()
         proc.wait()
 
+    # Copy log to working directory
+    local_log = target / f"{config.name}.log"
+    shutil.copy2(log_file, local_log)
     print(f"Done (exit {proc.returncode})")
 
     if email and email.smtp_user and email.smtp_password:
