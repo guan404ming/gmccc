@@ -9,10 +9,11 @@ Generate a clear, minimal changelog for the current branch.
 
 ## Instructions
 
-1. Run `git log --oneline -10 main` to study the repo's commit message convention (e.g., `feat:`, `MSSQL:`, `[COMPONENT]`, plain imperative, etc.)
-2. Run `git log --oneline main..HEAD` to get commits on the branch
-3. Run `git diff main...HEAD --stat` to see changed files
-4. Run `git diff main...HEAD` to read the actual changes
+0. Detect the default branch: `BASE=$(git remote show upstream 2>/dev/null | sed -n 's/.*HEAD branch: //p') || BASE=main`
+1. Run `git log --oneline -10 $BASE` to study the repo's commit message convention (e.g., `feat:`, `MSSQL:`, `[COMPONENT]`, plain imperative, etc.)
+2. Run `git log --oneline $BASE..HEAD` to get commits on the branch
+3. Run `git diff $BASE...HEAD --stat` to see changed files
+4. Run `git diff $BASE...HEAD` to read the actual changes
 5. Produce a changelog using the template below, with the title matching the repo's convention
 
 ## Template

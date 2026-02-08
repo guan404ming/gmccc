@@ -9,7 +9,7 @@ Shared development workflow used by project-specific dev skills. No planning ste
 
 ## Steps
 
-0. **Sync**, checkout main and run `git sync`.
+0. **Sync**, detect the default branch (`git remote show upstream 2>/dev/null | sed -n 's/.*HEAD branch: //p'`, fallback to `main`), checkout it and run `git sync`.
 
 1. **Create a branch** for the feature/fix.
 
@@ -23,4 +23,4 @@ Shared development workflow used by project-specific dev skills. No planning ste
 
 6. **PR summary:** Use `/dev-pr-summarize` to generate a changelog.
 
-7. **Checkout main** when done.
+7. **Checkout the default branch** when done.

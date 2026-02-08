@@ -13,7 +13,7 @@ description: Set up git aliases.
 ## Aliases
 
 ```bash
-git config --global alias.sync '!f() { git fetch upstream && git checkout main && git rebase upstream/main && git push origin main --force-with-lease; }; f'
+git config --global alias.sync '!f() { b=$(git remote show upstream | sed -n "s/.*HEAD branch: //p"); git fetch upstream && git checkout "$b" && git rebase "upstream/$b" && git push origin "$b" --force-with-lease; }; f'
 git config --global alias.pp 'push --force-with-lease'
 git config --global alias.r1 'reset HEAD~1'
 git config --global alias.ano 'commit -a --amend --no-edit'
