@@ -15,6 +15,7 @@ Generate a clear, minimal changelog for the current branch.
 3. Run `git diff $BASE...HEAD --stat` to see changed files
 4. Run `git diff $BASE...HEAD` to read the actual changes
 5. Produce a changelog using the template below, with the title matching the repo's convention
+6. If this is in main branch, create a new branch for this change
 
 ## Template
 
