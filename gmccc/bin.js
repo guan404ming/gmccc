@@ -27,9 +27,9 @@ const commands = {
 };
 
 const cmd = process.argv[2];
-if (!cmd || !commands[cmd]) {
+if (!cmd || cmd === "-h" || cmd === "--help" || !commands[cmd]) {
   console.log("Usage: gmccc <install|uninstall>");
-  process.exit(1);
+  process.exit(0);
 }
 
 commands[cmd]();
