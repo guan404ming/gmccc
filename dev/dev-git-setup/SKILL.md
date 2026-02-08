@@ -10,18 +10,27 @@ description: Set up git aliases.
 /dev-git-setup
 ```
 
-## Aliases
-
-```bash
-git config --global alias.sync '!f() { b=$(git remote show upstream | sed -n "s/.*HEAD branch: //p"); git fetch upstream && git checkout "$b" && git rebase "upstream/$b" && git push origin "$b" --force-with-lease; }; f'
-git config --global alias.pp 'push --force-with-lease'
-git config --global alias.r1 'reset HEAD~1'
-git config --global alias.ano 'commit -a --amend --no-edit'
-git config --global alias.temp 'commit -a -n -m "TEMP"'
-git config --global alias.a 'add .'
-```
-
 ## Instructions
 
-1. Run each alias command above.
-2. Verify with `git config --global --list | grep alias`.
+IMPORTANT: Do NOT use Bash or `git config` to set any aliases. Always use the Read and Edit tools on `~/.gitconfig` directly.
+
+1. Read `~/.gitconfig`.
+2. If an `[alias]` section exists, use the Edit tool to merge the aliases below into it. If it doesn't exist, use the Edit tool to append a new `[alias]` section.
+3. Verify with `git config --global --list | grep alias`.
+
+## Alias definitions
+
+Each line below is a gitconfig alias entry (key = value). Add them under `[alias]`:
+
+- `pp = push --force-with-lease`
+- `r1 = reset HEAD~1`
+- `ano = commit -a --amend --no-edit`
+- `atemp = commit -a -n -m "TEMP"`
+- `temp = commit -n -m "TEMP"`
+- `a = add .`
+- `no = commit --amend --no-edit`
+- sync (use double quotes to protect semicolons):
+
+```
+sync = "!f() { if git remote | grep -q upstream; then b=$(git remote show upstream | sed -n 's/.*HEAD branch: //p'); git fetch upstream && git checkout $b && git rebase upstream/$b && git push origin $b --force-with-lease; else git pull; fi; }; f"
+```
