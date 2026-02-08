@@ -82,12 +82,19 @@ def cmd_status(config_path: Path | None):
 
 
 def cmd_logs(config_path: Path | None):
-    """Tail scheduler logs."""
-    if not LOG_FILE.exists():
-        print("No log file found")
+    """List recent job logs."""
+    logs_dir = resolve_config_path(config_path).parent / "logs"
+    if not logs_dir.exists():
+        print("No logs found")
         return
 
-    subprocess.run(["tail", "-f", str(LOG_FILE)])
+    logs = sorted(logs_dir.glob("*.log"), key=lambda f: f.stat().st_mtime, reverse=True)
+    if not logs:
+        print("No logs found")
+        return
+
+    for log in logs[:10]:
+        print(log)
 
 
 def main():

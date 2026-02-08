@@ -118,8 +118,14 @@ def run_job(
     cmd = [arg.replace("{prompt}", prompt) for arg in CMD]
 
     if dry_run:
-        print(f"[DRY RUN] Would run {prompt} in {target}")
-        print(f"  {' '.join(cmd)}")
+        msg = f"[DRY RUN] Would run {prompt} in {target}\n  {' '.join(cmd)}"
+        print(msg)
+        if logs_dir is None:
+            logs_dir = DEFAULT_CONFIG_DIR / "logs"
+        logs_dir.mkdir(parents=True, exist_ok=True)
+        log_file = logs_dir / f"{config.name}_test.log"
+        log_file.write_text(msg + "\n")
+        print(f"Log: {log_file}")
         if email and email.smtp_user and email.smtp_password:
             send_email(
                 email,
