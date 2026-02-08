@@ -26,9 +26,10 @@ const commands = {
   },
 };
 
-const cmd = process.argv[2];
+const aliases = { i: "install", u: "uninstall" };
+const cmd = aliases[process.argv[2]] || process.argv[2];
 if (!cmd || cmd === "-h" || cmd === "--help" || !commands[cmd]) {
-  console.log("Usage: gmccc <install|uninstall>");
+  console.log("Usage: gmccc <install|uninstall> (i, u)");
   process.exit(0);
 }
 
