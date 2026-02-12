@@ -22,6 +22,23 @@ description: Develop dialect features for datafusion-sqlparser-rs from the upstr
      - Reuse existing parser infrastructure (e.g., `parse_begin_exception_end()`)
      - Add tests in `tests/sqlparser_<dialect>.rs`
      - For dialect-specific syntax, include a comment with the official doc link
+     - **AST convention (issue #1204):** wrap new statements in a named struct, not inline enum fields.
+       ```rust
+       // Good: named struct
+       pub struct Throw { pub error_number: Option<Expr>, ... }
+       Statement::Throw(Throw)
+
+       // Bad: inline fields
+       Statement::Throw { error_number: Option<Expr>, ... }
+       ```
+     - **Parser convention:** parse functions should be standalone (parse the full statement including its keyword) and return the struct, not `Statement`. In the keyword dispatch, rewind the token first:
+       ```rust
+       Keyword::THROW => {
+           self.prev_token();
+           self.parse_throw().map(Into::into)
+       },
+       ```
+     - **No early-return for empty input:** do not add short-circuit checks for semicolons or EOF at the start of parse functions. Let the function error naturally on incomplete input.
 
    - **Verify:**
      ```bash
