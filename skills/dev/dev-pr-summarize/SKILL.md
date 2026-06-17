@@ -34,8 +34,4 @@ Generate a clear, minimal changelog for the current branch.
 
 ## Rules
 
-- Title must follow the repo's commit message convention detected in step 1
-- "Why" is one sentence max
-- "How" bullets should be extremely minimal and clear
-- No fluff, no over-explanation
-- Output only the changelog, nothing else
+- No fluff. Output only the changelog, nothing else.

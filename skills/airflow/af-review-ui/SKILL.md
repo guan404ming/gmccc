@@ -35,19 +35,29 @@ React 19, Chakra UI v3, React Query, TypeScript, Vite, pnpm
 
 3. Run `prek airflow-core:ts-compile-lint-ui`
 
-4. Skip generated files: `openapi-gen/`, `openapi.merged.json`, `api_fastapi/*/openapi/*.yaml`. Only focus on the changes made in this PR. Do not review unchanged code.
+4. Skip generated files: `openapi-gen/`, `openapi.merged.json`, `api_fastapi/*/openapi/*.yaml`. Review only this PR's changes, not unchanged code.
 
-5. List issues as polite GitHub comment suggestions (do NOT post). Only report real issues — if there are fewer than 5, that's fine. Do not pad the list.
+## Output
+
+Write findings in **imperative voice**: state the fix, not the observation ("Reuse `ErrorAlert`", not "this could reuse ErrorAlert"). Stay **polite but brief** — a one-line thanks is fine, but never pad with praise, never list what is already fine, never restate the diff. Suggest, don't command ("Consider", "Could", "Suggest" over "You must"). Emit exactly these three parts and nothing else:
+
+1. **Checks** — one line: `ts-compile-lint-ui ✅ · <hook> ✅`. If backend API changed, add: `Run codegen (prek airflow-core:generate-openapi-spec && pnpm codegen).`
+2. **Findings** — real issues only, one line each, most important first. Skip the section entirely if none. Do NOT post.
    ```
-   1. `src/Foo.tsx:42` - Consider using existing `ErrorAlert` component.
-   2. `src/Bar.tsx:15` - Type should come from `openapi-gen/`.
+   1. `src/Foo.tsx:42` - Consider reusing `ErrorAlert`.
+   2. `src/Bar.tsx:15` - Move type to `openapi-gen/`.
    ```
+   Tag non-blocking ones `(nit)`. Cap at the ~7 that matter; drop the rest.
+   **Confirm every cited line number** by grepping the file (`grep -n` the symbol) before writing it — point at the exact line of the code being changed, never an approximate one.
+3. **Verdict** — one line, courteous, one word + half-sentence why:
+   - **Approve** — good to merge.
+   - **Approve with comments** — nits only, OK as-is.
+   - **Request changes** — name the blocking issue(s).
 
-6. Check changed code against `/react-best-practices` rules. List up to 2 most violated rules with file and line. Skip this section if none found.
+Keep the whole output under ~15 lines. If you wrote a paragraph, cut it.
 
-7. Start the verdict with a one-sentence summary of whether this PR's change is valuable or unnecessary.
+After the verdict, add one **zh-TW 摘要** block: 口語白話總結，依序講三件事 — 這個 PR 在做什麼、findings 的重點（用白話帶過每條，非阻擋的講「小建議」即可，沒 findings 就說沒問題）、結論要不要改。簡短，別逐字翻譯英文 findings。
 
-8. End with a verdict:
-   - **Approved** — no issues found, good to merge.
-   - **Approved with comments** — minor suggestions, but OK to merge as-is.
-   - **Request changes** — blocking issues that should be fixed before merge.
+```
+**摘要（zh-TW）：** <這個 PR 做了什麼>。<findings 白話重點>。<結論／要不要改>。
+```

@@ -104,15 +104,3 @@ description: Generate a Google Slides presentation from a paper PDF URL using gw
    ```
    https://docs.google.com/presentation/d/<presentationId>/edit
    ```
-
-## Rules
-- If a slide title wraps to multiple lines, move the body placeholder down using `updatePageElementTransform` to avoid overlap (increase translateY)
-- Always use `batchUpdate` for efficiency, combine as many requests as possible
-- Keep bullet text short, one line per point
-- Use level 1 bullets for sub-items, not "- " prefixes
-- Crop figures tightly, no excess whitespace
-- Caption each figure/table with a one-line description
-- Do not override theme fonts or colors
-- Never let images overlap or sit too close to the title (min 0.25" gap)
-- Position captions relative to actual image bottom, not at fixed absolute Y
-- Always run a post-creation overflow check on all slides before finishing
