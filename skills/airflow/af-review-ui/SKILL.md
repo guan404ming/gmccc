@@ -15,11 +15,32 @@ description: Review Airflow UI code for consistency, best practices, and convent
 React 19, Chakra UI v3, React Query, TypeScript, Vite, pnpm
 
 ## Review Checklist
-- Consistency with existing patterns
-- Reuse components from `src/components/ui/`
-- Use types from `openapi-gen/` (never hand-write API types)
-- Props with `readonly`: `type Props = { readonly x: T }`
-- Return `undefined` not `null`
+
+Lead with conventions. Most findings should be "mirror the existing pattern",
+not personal taste. Before flagging, grep for the canonical example so the
+finding points the author at code already in the tree.
+
+**Reuse over rebuild**
+- Reuse shared components before adding markup: `StateBadge` (states),
+  `ErrorAlert` (errors), `Time` (timestamps), `Dialog` / `Pagination` /
+  `Tooltip` from `src/components/ui/`. Grep `src/components/` first.
+- Never hardcode a state→color map or literal `"red"`/`"green"`; use
+  `StateBadge` or a Chakra `colorPalette` token.
+- Data fetching goes through generated hooks in `openapi/queries`, not ad-hoc fetch.
+
+**Types**
+- API types come from `openapi-gen/` (`openapi/requests/types.gen`). Never
+  hand-write a `string` where a generated enum exists (e.g.
+  `TaskInstanceState`, `DagRunState`).
+- After a backend API change, regenerate; never hand-edit generated files.
+
+**Component conventions**
+- Props: `type Props = { readonly x: T }`. Return `undefined`, not `null`.
+- User-facing text via `translate("ns:key")` — no string literals in JSX.
+- Modals follow the existing `Dialog.Root` pattern (`lazyMount`,
+  `unmountOnExit`, `onOpenChange={onClose}`); gate the query with `enabled`.
+- Complete `useMemo` / `useEffect` dependency arrays.
+- Mirror the closest existing page/component for file layout and naming.
 
 ## Instructions
 
@@ -35,20 +56,20 @@ React 19, Chakra UI v3, React Query, TypeScript, Vite, pnpm
 
 3. Run `prek airflow-core:ts-compile-lint-ui`
 
-4. Skip generated files: `openapi-gen/`, `openapi.merged.json`, `api_fastapi/*/openapi/*.yaml`. Review only this PR's changes, not unchanged code.
+4. Skip generated files: `openapi-gen/`, `openapi.merged.json`, `api_fastapi/*/openapi/*.yaml`. Review only this PR's changes, not unchanged code. If `git diff main` shows files the PR's own commits never touched, the branch is behind — note it needs a rebase, don't review the rebase noise.
 
 ## Output
 
-Write findings in **imperative voice**: state the fix, not the observation ("Reuse `ErrorAlert`", not "this could reuse ErrorAlert"). Stay **polite but brief** — a one-line thanks is fine, but never pad with praise, never list what is already fine, never restate the diff. Suggest, don't command ("Consider", "Could", "Suggest" over "You must"). Emit exactly these three parts and nothing else:
+Write findings in **imperative voice**: state the fix, not the observation ("Reuse `ErrorAlert`", not "this could reuse ErrorAlert"). Make each finding **constructive** — name the convention and cite the existing file/symbol to mirror (e.g. "use `StateBadge` like `Run/Details.tsx:60`"), so the author sees the pattern, not just the problem. Stay **polite but brief** — a one-line thanks is fine, but never pad with praise, never list what is already fine, never restate the diff. Suggest, don't command ("Consider", "Could", "Suggest" over "You must"). Emit exactly these three parts and nothing else:
 
 1. **Checks** — one line: `ts-compile-lint-ui ✅ · <hook> ✅`. If backend API changed, add: `Run codegen (prek airflow-core:generate-openapi-spec && pnpm codegen).`
 2. **Findings** — real issues only, one line each, most important first. Skip the section entirely if none. Do NOT post.
    ```
-   1. `src/Foo.tsx:42` - Consider reusing `ErrorAlert`.
-   2. `src/Bar.tsx:15` - Move type to `openapi-gen/`.
+   1. `src/Foo.tsx:42` - Reuse `ErrorAlert` (see `src/components/ErrorAlert.tsx`) instead of the inline alert.
+   2. `src/Bar.tsx:15` - Type as `TaskInstanceState` from `openapi/requests/types.gen`, not `string`.
    ```
-   Tag non-blocking ones `(nit)`. Cap at the ~7 that matter; drop the rest.
-   **Confirm every cited line number** by grepping the file (`grep -n` the symbol) before writing it — point at the exact line of the code being changed, never an approximate one.
+   Tag non-blocking ones `(nit)`. Order by impact: correctness/convention breaks first, then reuse, then nits. Cap at the ~7 that matter; drop the rest.
+   **Confirm every cited line number** by grepping the file (`grep -n` the symbol) before writing it — point at the exact line of the code being changed, never an approximate one. Cite the example-to-mirror's location too.
 3. **Verdict** — one line, courteous, one word + half-sentence why:
    - **Approve** — good to merge.
    - **Approve with comments** — nits only, OK as-is.
