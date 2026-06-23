@@ -2,7 +2,7 @@
 
 const { execSync } = require("child_process");
 
-const REPO = "guan404ming/claude-code-skills";
+const REPO = "guan404ming/gmccc";
 const CLAUDE_MD_URL = `https://raw.githubusercontent.com/${REPO}/main/CLAUDE.md`;
 
 const commands = {

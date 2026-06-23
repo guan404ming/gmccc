@@ -37,6 +37,6 @@ class EmailConfig(BaseModel):
 class Config(BaseModel):
     """Top-level configuration."""
 
-    skills_repo: str = "guan404ming/claude-code-skills"
+    skills_repo: str = "guan404ming/gmccc"
     email: EmailConfig | None = None
     jobs: list[JobConfig]

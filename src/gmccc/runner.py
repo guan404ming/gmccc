@@ -15,7 +15,7 @@ DEFAULT_CONFIG_DIR = Path.home() / ".config" / "gmccc"
 DEFAULT_CONFIG_FILE = DEFAULT_CONFIG_DIR / "jobs.json"
 
 EXAMPLE_CONFIG = {
-    "skills_repo": "guan404ming/claude-code-skills",
+    "skills_repo": "guan404ming/gmccc",
     "email": {
         "to": "guanmingchiu@gmail.com",
         "smtp_user": "xxx@gmail.com",
