@@ -3,7 +3,7 @@
 - No Explore agent.
 - Keep changes minimal, clean, clear.
 - Reuse, don't rebuild. Avoid duplication.
-- Avoid comments and docstrings; prefer none. If needed, keep them terse and explain the non-obvious *why*, never restate code.
+- No docstrings or comments unless the repo requires them. If required, keep them terse and explain the non-obvious *why*, never restate code.
 - No em dashes; use commas or periods.
 - No fabrication. Verify before claiming; if unchecked, say so.
 - Commit messages: short, imperative, capitalized ~50-char subject, no trailing period.
