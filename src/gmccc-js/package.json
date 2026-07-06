@@ -1,6 +1,6 @@
 {
   "name": "gmccc",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "Guan-Ming's Claude Code Skill CLI",
   "bin": {
     "gmccc": "./bin.js"
