@@ -60,7 +60,14 @@ finding points the author at code already in the tree.
 
 ## Output
 
-Write findings in **imperative voice**: state the fix, not the observation ("Reuse `ErrorAlert`", not "this could reuse ErrorAlert"). Make each finding **constructive** — name the convention and cite the existing file/symbol to mirror (e.g. "use `StateBadge` like `Run/Details.tsx:60`"), so the author sees the pattern, not just the problem. Stay **polite but brief** — a one-line thanks is fine, but never pad with praise, never list what is already fine, never restate the diff. Suggest, don't command ("Consider", "Could", "Suggest" over "You must"). Emit exactly these three parts and nothing else:
+Finding style:
+
+- **Imperative voice**: state the fix, not the observation ("Reuse `ErrorAlert`", not "this could reuse ErrorAlert").
+- **Constructive**: name the convention and cite the file/symbol to mirror (e.g. "use `StateBadge` like `Run/Details.tsx:60`").
+- **Polite but brief**: a one-line thanks is fine; never pad with praise, list what is already fine, or restate the diff.
+- **Suggest, don't command**: "Consider" / "Could" / "Suggest" over "You must".
+
+Emit exactly these three parts and nothing else:
 
 1. **Checks** — one line: `ts-compile-lint-ui ✅ · <hook> ✅`. If backend API changed, add: `Run codegen (prek airflow-core:generate-openapi-spec && pnpm codegen).`
 2. **Findings** — real issues only, one line each, most important first. Skip the section entirely if none. Do NOT post.
