@@ -25,9 +25,9 @@ Generate a clear, minimal changelog for the current branch.
 
 <One sentence explaining the motivation or problem>
 
-## How (at most 3 points, start with verb)
+## How
 
-- <Bullet points describing what was done, keep each line short>
+- <At most 3 bullet points, each starting with a verb, keep each line short>
 - <Focus on what changed, not implementation details>
 ```
 
