@@ -23,7 +23,7 @@ Generate a clear, minimal changelog for the current branch.
 
 ## Why
 
-<One sentence explaining the motivation or problem>
+<One short, high-level sentence a non-expert can read: what was broken or missing, in plain words. No file paths, no import chains, no internals>
 
 ## How
 
