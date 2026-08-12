@@ -27,10 +27,11 @@ Generate a clear, minimal changelog for the current branch.
 
 ## How
 
-- <At most 3 bullet points, each starting with a verb, keep each line short>
+- <At most 3 bullet points, each starting with a verb>
 - <Focus on what changed, not implementation details>
 ```
 
 ## Rules
 
 - No fluff. Output only the changelog, nothing else.
+- Keep every bullet high level and at most 15 words.
