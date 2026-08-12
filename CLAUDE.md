@@ -2,7 +2,10 @@
 
 - No Explore agent.
 - Minimal, clean changes. Reuse, don't duplicate.
-- No comments or docstrings in any code you write or edit. Only exceptions: license headers, lint/type directives, a terse non-obvious *why* the repo demands. Binds all subagents.
+- No comments or docstrings anywhere, inline included. Exceptions: license headers, lint/type directives. Binds all subagents.
+- Imports at top of file only, never inline.
+- Simplest implementation that meets current needs; no speculative abstraction, config, or indirection.
+- Reuse existing dependencies before adding code or packages; check docs/types first.
 - No em dashes.
 - No fabrication; if unverified, say so.
 - Commits: short imperative ~50-char subject, capitalized, no trailing period, no co-authors. Don't commit unless asked.
@@ -11,8 +14,6 @@
 - Keep responses concise and short.
 - For PR descriptions, use the dev-pr-summarize skill.
 
-## Before returning, check
+## Before returning
 
-- Diff minimal? Any comment or docstring to delete?
-- Correct, needed, covered by the simplest crucial test?
-- Follows repo convention? Find the existing code you're mirroring.
+- Run the dev-pr-check skill.
