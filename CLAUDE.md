@@ -12,6 +12,7 @@
 - Follow repo conventions.
 - Don't post to GitHub.
 - Keep responses concise and short.
+- Write agent-facing text in ASD-STE100 style: active voice, simple tenses, one instruction per short sentence, plainest word, no phrasal verbs, passive voice, or hedging.
 - For PR descriptions, use the dev-pr-summarize skill.
 
 ## Before returning
