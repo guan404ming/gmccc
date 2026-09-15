@@ -22,7 +22,11 @@ IMPORTANT: Do NOT use Bash or `git config` to set any aliases. Always use the Re
 
 Each line below is a gitconfig alias entry (key = value). Add them under `[alias]`:
 
-- `pp = push --force-with-lease`
+- pp (fetch first, refuse on main/master; use double quotes):
+
+```
+pp = "!f() { b=$(git symbolic-ref --short HEAD) || return 1; case $b in main|master) echo \"pp: refuse force push on $b\" >&2; return 1;; esac; git fetch origin \"$b\" && git push --force-with-lease \"$@\"; }; f"
+```
 - `r1 = reset HEAD~1`
 - `ano = commit -a --amend --no-edit`
 - `atemp = commit -a -n -m "TEMP"`
