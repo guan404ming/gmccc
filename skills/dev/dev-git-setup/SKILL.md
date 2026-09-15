@@ -25,7 +25,7 @@ Each line below is a gitconfig alias entry (key = value). Add them under `[alias
 - pp (fetch first, refuse on main/master; use double quotes):
 
 ```
-pp = "!f() { b=$(git symbolic-ref --short HEAD) || return 1; case $b in main|master) echo \"pp: refuse force push on $b\" >&2; return 1;; esac; git fetch origin \"$b\" && git push --force-with-lease \"$@\"; }; f"
+pp = "!f() { b=$(git symbolic-ref --short HEAD) || return 1; case $b in main|master) echo \"pp: refuse force push on $b\" >&2; return 1;; esac; if git ls-remote --exit-code --heads origin \"$b\" >/dev/null 2>&1; then git fetch origin \"$b\" || return 1; fi; git push --force-with-lease \"$@\"; }; f"
 ```
 - `r1 = reset HEAD~1`
 - `ano = commit -a --amend --no-edit`
