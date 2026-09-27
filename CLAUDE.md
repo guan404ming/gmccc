@@ -22,6 +22,6 @@
 
 ## Code search
 
-- Search code with `tgrep -- <pattern> .` via Bash from the project root. Do not use the Grep tool.
-- Use `-F` for literal strings. Use `-t` or `-g` to scope. Use `--no-index` when file freshness matters.
+- Search code with `rg -- <pattern> .` from the project root.
+- Use `-F` for literal strings. Use `-t` or `-g` to scope.
 - Exit code 1 means no match, not an error.
